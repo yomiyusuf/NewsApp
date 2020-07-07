@@ -5,11 +5,11 @@ import com.google.gson.annotations.SerializedName
 
 data class HeadlineResponse(
     @SerializedName("status")
-    val status: String,
+    var status: String,
     @SerializedName("totalResults")
-    val totalResults: Int,
+    var totalResults: Int,
     @SerializedName("articles")
-    val articles: List<Article>
+    val articles: ArrayList<Article>
 )
 
 data class Article(

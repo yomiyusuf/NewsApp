@@ -5,6 +5,7 @@ import com.yomi.latestnews.data.model.SourceResponse
 import com.yomi.latestnews.util.Endpoints
 import io.reactivex.Single
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 /**
  * Created by Yomi Joseph on 2020-07-07.
@@ -15,5 +16,5 @@ interface NewsService {
     fun getSources(): Single<SourceResponse>
 
     @GET(Endpoints.HEADLINES)
-    fun getHeadlines(): Single<HeadlineResponse>
+    fun getHeadlines(@Query("sources") sources: String): Single<HeadlineResponse>
 }

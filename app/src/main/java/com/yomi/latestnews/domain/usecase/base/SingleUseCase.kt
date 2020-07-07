@@ -6,19 +6,20 @@ import io.reactivex.schedulers.Schedulers
 
 /**
  * This abstract class is shared among several closely related UseCase classes
- * that classes that extend this abstract class to use common methods & fields
+ * that extend this abstract class to use common methods & fields
  **/
 abstract class SingleUseCase<T> : UseCase() {
 
-    internal abstract fun buildUseCaseSingle(): Single<T>
+    internal abstract fun buildUseCaseSingle(params: List<String>? = null): Single<T>
 
     fun execute(
+        params: List<String>?,
         onSuccess: ((t: T) -> Unit),
         onError: ((t: Throwable) -> Unit),
         onFinished: () -> Unit = {}
     ) {
         disposeLast()
-        lastDisposable = buildUseCaseSingle()
+        lastDisposable = buildUseCaseSingle(params)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doAfterTerminate(onFinished)

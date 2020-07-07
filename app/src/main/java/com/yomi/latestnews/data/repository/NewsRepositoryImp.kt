@@ -14,7 +14,7 @@ class NewsRepositoryImp(private val newsService: NewsService): NewsRepository {
         return newsService.getSources()
     }
 
-    override fun getHeadlines(): Single<HeadlineResponse> {
-        return newsService.getHeadlines()
+    override fun getHeadlines(source: String): Single<HeadlineResponse> {
+        return newsService.getHeadlines(source)
     }
 }

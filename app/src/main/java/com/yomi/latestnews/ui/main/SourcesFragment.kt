@@ -7,12 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.yomi.latestnews.R
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class SourcesFragment : Fragment() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private val viewModel by sharedViewModel<NewsViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -20,6 +18,11 @@ class SourcesFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_sources, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.getSources()
     }
 
     companion object {

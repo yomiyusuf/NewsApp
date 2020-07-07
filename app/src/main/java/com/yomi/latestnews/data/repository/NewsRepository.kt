@@ -9,5 +9,5 @@ import io.reactivex.Single
  */
 interface NewsRepository {
     fun getSources(): Single<SourceResponse>
-    fun getHeadlines(): Single<HeadlineResponse>
+    fun getHeadlines(source: String): Single<HeadlineResponse>
 }

@@ -10,7 +10,7 @@ import io.reactivex.Single
  */
 class SourcesUseCase(private val repository: NewsRepository): SingleUseCase<SourceResponse>() {
 
-    override fun buildUseCaseSingle(): Single<SourceResponse> {
+    override fun buildUseCaseSingle(params: List<String>?): Single<SourceResponse> {
         return repository.getSources()
     }
 
