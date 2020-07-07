@@ -1,10 +1,10 @@
-package com.yomi.latestnews.ui
+package com.yomi.latestnews.ui.main
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.yomi.latestnews.ui.main.HeadlinesFragment
-import com.yomi.latestnews.ui.main.SavesFragment
-import com.yomi.latestnews.ui.main.SourcesFragment
+import com.yomi.latestnews.ui.feature.headlines.HeadlinesFragment
+import com.yomi.latestnews.ui.feature.SavesFragment
+import com.yomi.latestnews.ui.feature.sources.SourcesFragment
 
 /**
  * Created by Yomi Joseph on 2020-07-07.

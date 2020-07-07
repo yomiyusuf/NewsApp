@@ -1,7 +1,9 @@
 package com.yomi.latestnews.data.model
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 data class HeadlineResponse(
     @SerializedName("status")
@@ -12,6 +14,7 @@ data class HeadlineResponse(
     val articles: ArrayList<Article>
 )
 
+@Parcelize
 data class Article(
     @SerializedName("source")
     val source: Source,
@@ -29,4 +32,4 @@ data class Article(
     val publishedAt: String,
     @SerializedName("content")
     val content: String?
-)
+): Parcelable

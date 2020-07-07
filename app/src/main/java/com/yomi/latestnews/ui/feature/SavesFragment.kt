@@ -1,4 +1,4 @@
-package com.yomi.latestnews.ui.main
+package com.yomi.latestnews.ui.feature
 
 
 import android.os.Bundle

@@ -1,4 +1,4 @@
-package com.yomi.latestnews.ui.main.model
+package com.yomi.latestnews.ui.model
 
 import com.yomi.latestnews.data.model.Source
 

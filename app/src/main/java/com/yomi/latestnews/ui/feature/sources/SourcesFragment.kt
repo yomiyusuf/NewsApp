@@ -1,5 +1,4 @@
-package com.yomi.latestnews.ui.main
-
+package com.yomi.latestnews.ui.feature.sources
 
 import android.os.Bundle
 import android.util.Log
@@ -10,38 +9,34 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 
 import com.yomi.latestnews.R
+import com.yomi.latestnews.ui.feature.NewsViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class HeadlinesFragment : Fragment() {
-
+class SourcesFragment : Fragment() {
     private val viewModel by sharedViewModel<NewsViewModel>()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_headlines, container, false)
+        return inflater.inflate(R.layout.fragment_sources, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initObservers()
-        viewModel.refresh()
+        registerObservers()
+        viewModel.getSources()
     }
 
-    private fun initObservers() {
-        viewModel.headlines.observe(viewLifecycleOwner, Observer {
-            it?.let{ Log.e("FRAGMENT", it.toString())}
+    private fun registerObservers() {
+        viewModel.sources.observe(viewLifecycleOwner, Observer {
+            it?.let{ Log.e("SOURCES", it.toString())}
         })
     }
 
     companion object {
         @JvmStatic
-        fun newInstance() = HeadlinesFragment()
+        fun newInstance() = SourcesFragment()
     }
 }

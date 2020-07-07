@@ -22,7 +22,7 @@ class HeadlinesUseCase(private val repository: NewsRepository): SingleUseCase<He
                 response.totalResults += res.totalResults
                 response.articles.addAll((res.articles))
             }
-            response.apply { articles.sortBy { article -> article.publishedAt } }
+            response.apply { articles.sortByDescending { article -> article.publishedAt } }
         }
         return Single.zip(jobs, merger)
     }

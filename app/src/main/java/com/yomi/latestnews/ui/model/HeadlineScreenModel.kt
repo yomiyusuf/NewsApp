@@ -1,11 +1,11 @@
-package com.yomi.latestnews.ui.main.model
+package com.yomi.latestnews.ui.model
 
 import com.yomi.latestnews.data.model.Article
 
 /**
  * Created by Yomi Joseph on 2020-07-07.
  */
-class HeadlineScreenModel(fromApi: Article) {
+class HeadlineScreenModel( fromApi: Article) {
     val sourceName = fromApi.source.name
     val title = fromApi.title
     val description = fromApi.description
