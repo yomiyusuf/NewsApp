@@ -9,12 +9,10 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
 
 import com.yomi.latestnews.R
-import com.yomi.latestnews.ui.main.WebViewFragmentArgs
 import kotlinx.android.synthetic.main.fragment_detail.*
 
 class WebViewFragment : Fragment() {
 
-    var url: String? = null
     val args: WebViewFragmentArgs by navArgs()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

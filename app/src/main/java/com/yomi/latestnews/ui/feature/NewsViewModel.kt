@@ -48,4 +48,12 @@ class NewsViewModel(private val headlinesUseCase: HeadlinesUseCase, private val 
     fun saveArticle(headline: HeadlineScreenModel) {
         //headlinesUseCase.save()
     }
+
+    fun saveSource(id: String) {
+        Log.e("VM", "saved")
+    }
+
+    fun deleteSource(id: String) {
+        Log.e("VM", "deleted")
+    }
 }
