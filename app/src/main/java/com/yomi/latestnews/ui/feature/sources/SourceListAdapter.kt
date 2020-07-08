@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.item_source.view.*
 class SourceListAdapter(private val sources: ArrayList<SourceScreenModel>):
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var itemClick: ((String, Boolean) -> Unit)? = null
+    var itemClick: ((SourceScreenModel, Boolean) -> Unit)? = null
 
     fun updateData(list: List<SourceScreenModel>){
         sources.clear()
@@ -42,7 +42,7 @@ class SourceListAdapter(private val sources: ArrayList<SourceScreenModel>):
                 txt_source_name.text = model.name
                 checkbox_source.isChecked = model.selected
                 checkbox_source.setOnCheckedChangeListener { btnView, isChecked ->
-                    itemClick?.invoke(model.id!!, isChecked)
+                    itemClick?.invoke(model, isChecked)
                 }
                 item_source.setOnClickListener{
                     checkbox_source.toggle()

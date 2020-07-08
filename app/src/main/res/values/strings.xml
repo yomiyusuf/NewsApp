@@ -6,4 +6,6 @@
     <string name="headlines">Headlines</string>
     <string name="sources">Sources</string>
     <string name="saves">Saves</string>
+    <string name="save_article">Save Article</string>
+    <string name="no_saved_headlines_msg">You have not saved any headlines yet</string>
 </resources>

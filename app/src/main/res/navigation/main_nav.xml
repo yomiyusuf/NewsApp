@@ -18,7 +18,7 @@
     </fragment>
     <fragment
         android:id="@+id/webViewFragment"
-        android:name="com.yomi.latestnews.ui.feature.WebViewFragment"
+        android:name="com.yomi.latestnews.ui.feature.DetailFragment"
         android:label="WebViewFragment"
         tools:layout="@layout/fragment_detail"
         >
@@ -28,8 +28,8 @@
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
         <argument
-            android:name="url"
-            app:argType="string"
+            android:name="headline"
+            app:argType="com.yomi.latestnews.ui.model.HeadlineScreenModel"
             />
     </fragment>
 </navigation>

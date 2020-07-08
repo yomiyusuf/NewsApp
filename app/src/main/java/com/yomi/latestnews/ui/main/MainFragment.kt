@@ -18,10 +18,6 @@ class MainFragment : Fragment() {
     private lateinit var viewPager: ViewPager2
     private val headlinesViewModel by viewModel<NewsViewModel>()
 
-    companion object {
-        fun newInstance() = MainFragment()
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

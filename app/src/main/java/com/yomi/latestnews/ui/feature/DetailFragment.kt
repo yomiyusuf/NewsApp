@@ -10,10 +10,13 @@ import androidx.navigation.fragment.navArgs
 
 import com.yomi.latestnews.R
 import kotlinx.android.synthetic.main.fragment_detail.*
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class WebViewFragment : Fragment() {
+class DetailFragment : Fragment() {
 
-    val args: WebViewFragmentArgs by navArgs()
+    private val viewModel by sharedViewModel<NewsViewModel>()
+
+    val args: DetailFragmentArgs by navArgs()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -25,8 +28,12 @@ class WebViewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         arguments?.let {
-            val url = args.url
-            webview.loadUrl(url)
+            val headline = args.headline
+            webview.loadUrl(headline.articleUrl)
+
+            btn_detail_save.setOnClickListener {
+                viewModel.saveHeadline(args.headline)
+            }
         }
     }
 }

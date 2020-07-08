@@ -3,7 +3,7 @@ package com.yomi.latestnews.ui.main
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.yomi.latestnews.ui.feature.headlines.HeadlinesFragment
-import com.yomi.latestnews.ui.feature.SavesFragment
+import com.yomi.latestnews.ui.feature.savedArticles.SavedFragment
 import com.yomi.latestnews.ui.feature.sources.SourcesFragment
 
 /**
@@ -17,7 +17,7 @@ class PagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
         return when (position) {
             0 -> HeadlinesFragment.newInstance()
             1 -> SourcesFragment.newInstance()
-            else -> SavesFragment.newInstance()
+            else -> SavedFragment.newInstance()
         }
     }
 }

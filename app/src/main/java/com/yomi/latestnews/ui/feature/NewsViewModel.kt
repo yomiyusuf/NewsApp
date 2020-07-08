@@ -1,5 +1,6 @@
 package com.yomi.latestnews.ui.feature
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,6 +8,8 @@ import com.yomi.latestnews.domain.usecase.HeadlinesUseCase
 import com.yomi.latestnews.domain.usecase.SourcesUseCase
 import com.yomi.latestnews.ui.model.HeadlineScreenModel
 import com.yomi.latestnews.ui.model.SourceScreenModel
+import com.yomi.latestnews.util.SingleLiveEvent
+import io.reactivex.schedulers.Schedulers
 
 /**
  * Created by Yomi Joseph on 2020-07-07.
@@ -21,39 +24,81 @@ class NewsViewModel(private val headlinesUseCase: HeadlinesUseCase, private val 
     val sources : MutableLiveData<List<SourceScreenModel>>
         get() = _sources
 
-    fun getHeadlines() {
-        headlinesUseCase.execute(
-            listOf("techcrunch"),
-            onSuccess = { response ->
-                _headlines.value = response.articles.map {
-                    HeadlineScreenModel(
-                        (it)
-                    )
+    private val _savedHeadlines = MutableLiveData<List<HeadlineScreenModel>>()
+    val savedHeadlines : MutableLiveData<List<HeadlineScreenModel>>
+        get() = _savedHeadlines
+
+    val emptyListEvent = SingleLiveEvent<Boolean>()
+    val emptySavedHeadlinesEvent = SingleLiveEvent<Boolean>()
+
+    @SuppressLint("CheckResult")
+    fun refreshHeadlines() {
+        sourcesUseCase.getSavedItems()
+            .subscribeOn(Schedulers.newThread())
+            .observeOn(Schedulers.newThread())
+            .subscribe({ result ->
+                if(result.isEmpty()) {
+                    emptyListEvent.postValue(true)
+                    _headlines.postValue(emptyList())
+                } else {
+                    emptyListEvent.postValue(false)
+                    getHeadlines(result)}
                 }
+                , {
+                    Log.e("NETWORK ERROR", it.toString())
+                    emptyListEvent.postValue(true)
+                    _headlines.postValue(emptyList())
+                })
+    }
+
+    private fun getHeadlines(sources: List<SourceScreenModel>) {
+        headlinesUseCase.execute(
+            sources.map { it.id },
+            onSuccess = { response ->
+                _headlines.value = response
             },
 
-            onError = { Log.e("VM", it.toString())})
+            onError = { Log.e("NETWORK ERROR", it.toString())})
     }
 
     fun getSources() {
         sourcesUseCase.execute(
             null,
             onSuccess = { response ->
-                _sources.value = response.sources.map { SourceScreenModel((it)) }
+                _sources.value = response
             },
 
-            onError = { Log.e("VM", it.toString())})
+            onError = { Log.e("NETWORK ERROR", it.toString())})
     }
 
-    fun saveArticle(headline: HeadlineScreenModel) {
-        //headlinesUseCase.save()
+    @SuppressLint("CheckResult")
+    fun getSavedHeadlines() {
+        headlinesUseCase.getSavedItems()
+            .subscribeOn(Schedulers.newThread())
+            .observeOn(Schedulers.newThread())
+            .subscribe({ result ->
+                if(result.isEmpty()) {
+                    emptySavedHeadlinesEvent.postValue(true)
+                    _savedHeadlines.postValue(emptyList())
+                } else {
+                    emptyListEvent.postValue(false)
+                    _savedHeadlines.postValue(result)}
+            }, {})
     }
 
-    fun saveSource(id: String) {
-        Log.e("VM", "saved")
+    fun saveHeadline(headline: HeadlineScreenModel) {
+        headlinesUseCase.insertItem(headline)
     }
 
-    fun deleteSource(id: String) {
-        Log.e("VM", "deleted")
+    fun deleteHeadline(headline: HeadlineScreenModel) {
+        headlinesUseCase.deleteItem(headline)
+    }
+
+    fun saveSource(source: SourceScreenModel) {
+        sourcesUseCase.insertItem(source)
+    }
+
+    fun deleteSource(source: SourceScreenModel) {
+        sourcesUseCase.deleteItem(source)
     }
 }

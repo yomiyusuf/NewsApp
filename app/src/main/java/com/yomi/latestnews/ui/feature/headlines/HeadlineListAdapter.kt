@@ -40,7 +40,7 @@ class HeadlineListAdapter(private val headlines: ArrayList<HeadlineScreenModel>)
         holder.view.image_headline.loadImage(headline.thumbnailUrl,
             getProgressDrawable(holder.view.context))
         holder.view.item_headline.setOnClickListener{
-            val action = MainFragmentDirections.actionDetail(headline.articleUrl)
+            val action = MainFragmentDirections.actionDetail(headline)
             Navigation.findNavController(holder.view).navigate(action)
         }
     }

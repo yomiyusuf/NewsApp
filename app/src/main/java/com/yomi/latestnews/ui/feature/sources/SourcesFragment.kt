@@ -42,11 +42,11 @@ class SourcesFragment : Fragment() {
 
     private fun initRecyclerView() {
         listAdapter = SourceListAdapter(arrayListOf()).apply {
-            itemClick = { id, isChecked ->
+            itemClick = { source, isChecked ->
                 if (isChecked) {
-                    viewModel.saveSource(id)
+                    viewModel.saveSource(source)
                 } else {
-                    viewModel.deleteSource(id)
+                    viewModel.deleteSource(source)
                 }
             }
         }
