@@ -15,15 +15,16 @@ class SourcesUseCase(private val repository: NewsRepository): SingleUseCase<List
     DatabaseInteractor<SourceScreenModel> {
 
     override fun buildUseCaseSingle(params: List<String>?): Single<List<SourceScreenModel>> {
-        return Singles.zip(repository.getSources(), repository.getSavedSources()) { remoteSorces, localSources ->
-            combineSources(remoteSorces, localSources)
+        return Singles.zip(repository.getSources(), repository.getSavedSources()) { remoteSources, localSources ->
+            combineSources(remoteSources, localSources)
         }
     }
 
     private fun combineSources(remoteSources: SourceResponse, localSources: List<SourceScreenModel>)
             : List<SourceScreenModel> {
         return remoteSources.sources.map { remote ->
-            SourceScreenModel(remote.id, remote.name, localSources.any { local -> local.id ==  remote.id}) }
+            val isSelected = localSources.any { local -> local.id ==  remote.id}
+            SourceScreenModel(remote.id, remote.name, isSelected) }
     }
 
     override fun insertItem(item: SourceScreenModel) {
@@ -36,5 +37,9 @@ class SourcesUseCase(private val repository: NewsRepository): SingleUseCase<List
 
     override fun getSavedItems(): Single<List<SourceScreenModel>> {
         return repository.getSavedSources()
+    }
+
+    override fun findItem(item: SourceScreenModel): Single<SourceScreenModel> {
+        return repository.findSource(item.id)
     }
 }

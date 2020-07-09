@@ -8,11 +8,12 @@ import com.yomi.latestnews.R
 import com.yomi.latestnews.ui.model.SourceScreenModel
 import kotlinx.android.synthetic.main.item_source.view.*
 
+
 /**
  * Created by Yomi Joseph on 2020-07-08.
  */
 class SourceListAdapter(private val sources: ArrayList<SourceScreenModel>):
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    RecyclerView.Adapter<SourceListAdapter.SourceViewHolder>() {
 
     var itemClick: ((SourceScreenModel, Boolean) -> Unit)? = null
 
@@ -22,7 +23,7 @@ class SourceListAdapter(private val sources: ArrayList<SourceScreenModel>):
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder  {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SourceViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val view = inflater.inflate(R.layout.item_source, parent, false)
         return SourceViewHolder(view)
@@ -30,24 +31,27 @@ class SourceListAdapter(private val sources: ArrayList<SourceScreenModel>):
 
     override fun getItemCount() = sources.size
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val viewHolder = holder as SourceViewHolder
-        viewHolder.bindView(sources[position])
+    override fun onBindViewHolder(holder: SourceViewHolder, position: Int) {
+        val item = sources[position]
+        holder.setIsRecyclable(false)
+        holder.view.txt_source_name.text = item.name
+        holder.view.checkbox_source.isChecked = item.selected
+        holder.view.checkbox_source.setOnCheckedChangeListener { btnView, isChecked ->
+                updateSourceSelectState(item.id, isChecked)
+                itemClick?.invoke(item, isChecked)
+        }
 
     }
 
-    inner class SourceViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        fun bindView(model: SourceScreenModel) {
-            with(itemView) {
-                txt_source_name.text = model.name
-                checkbox_source.isChecked = model.selected
-                checkbox_source.setOnCheckedChangeListener { btnView, isChecked ->
-                    itemClick?.invoke(model, isChecked)
-                }
-                item_source.setOnClickListener{
-                    checkbox_source.toggle()
-                }
-            }
+    /**
+     * Update the state of the source list in memory
+     */
+    private fun updateSourceSelectState(id: String, isSelected: Boolean) {
+        sources.apply {
+            find { it.id == id }?.selected = isSelected
         }
+    }
+
+    inner class SourceViewHolder(var view: View): RecyclerView.ViewHolder(view) {
     }
 }

@@ -19,4 +19,7 @@ interface HeadlineDao {
 
     @Delete
     fun delete(model: HeadlineScreenModel)
+
+    @Query("SELECT * FROM headline WHERE articleUrl =:url")
+    fun find(url: String): Single<HeadlineScreenModel>
 }

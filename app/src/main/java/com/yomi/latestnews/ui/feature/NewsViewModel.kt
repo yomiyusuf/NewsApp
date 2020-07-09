@@ -30,6 +30,8 @@ class NewsViewModel(private val headlinesUseCase: HeadlinesUseCase, private val 
 
     val emptyListEvent = SingleLiveEvent<Boolean>()
     val emptySavedHeadlinesEvent = SingleLiveEvent<Boolean>()
+    val headlineExistEvent = SingleLiveEvent<Boolean>()
+    val errorEvent = SingleLiveEvent<Boolean>()
 
     @SuppressLint("CheckResult")
     fun refreshHeadlines() {
@@ -46,6 +48,7 @@ class NewsViewModel(private val headlinesUseCase: HeadlinesUseCase, private val 
                 }
                 , {
                     Log.e("NETWORK ERROR", it.toString())
+                    errorEvent.postValue(true)
                     emptyListEvent.postValue(true)
                     _headlines.postValue(emptyList())
                 })
@@ -58,7 +61,10 @@ class NewsViewModel(private val headlinesUseCase: HeadlinesUseCase, private val 
                 _headlines.value = response
             },
 
-            onError = { Log.e("NETWORK ERROR", it.toString())})
+            onError = {
+                errorEvent.postValue(true)
+                Log.e("NETWORK ERROR", it.toString())
+            })
     }
 
     fun getSources() {
@@ -68,7 +74,10 @@ class NewsViewModel(private val headlinesUseCase: HeadlinesUseCase, private val 
                 _sources.value = response
             },
 
-            onError = { Log.e("NETWORK ERROR", it.toString())})
+            onError = {
+                errorEvent.postValue(true)
+                Log.e("NETWORK ERROR", it.toString())
+            })
     }
 
     @SuppressLint("CheckResult")
@@ -84,8 +93,17 @@ class NewsViewModel(private val headlinesUseCase: HeadlinesUseCase, private val 
                     emptySavedHeadlinesEvent.postValue(false)
                     _savedHeadlines.postValue(result)}
             }, {
+                errorEvent.postValue(true)
                 Log.e("DB ERROR", it.toString())
             })
+    }
+
+    @SuppressLint("CheckResult")
+    fun findHeadline(headline: HeadlineScreenModel) {
+        headlinesUseCase.findItem(headline)
+            .subscribeOn(Schedulers.newThread())
+            .observeOn(Schedulers.newThread())
+            .subscribe({ headline -> headlineExistEvent.postValue(true) }, {headlineExistEvent.postValue(false)})
     }
 
     fun saveHeadline(headline: HeadlineScreenModel) {

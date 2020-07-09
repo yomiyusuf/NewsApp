@@ -43,5 +43,9 @@ class HeadlinesUseCase(private val repository: NewsRepository): SingleUseCase<Li
         return repository.getSavedHeadlines()
     }
 
+    override fun findItem(item: HeadlineScreenModel): Single<HeadlineScreenModel> {
+        return repository.findHeadline(item.articleUrl)
+    }
+
 
 }

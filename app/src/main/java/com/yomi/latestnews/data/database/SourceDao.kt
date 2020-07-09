@@ -18,4 +18,7 @@ interface SourceDao {
 
     @Delete
     fun delete(model: SourceScreenModel)
+
+    @Query("SELECT * FROM source WHERE id =:id")
+    fun find(id: String): Single<SourceScreenModel>
 }

@@ -6,9 +6,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebViewClient
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 
 import com.yomi.latestnews.R
+import com.yomi.latestnews.util.AndroidHelper
+import com.yomi.latestnews.util.visibleOrGone
 import kotlinx.android.synthetic.main.fragment_detail.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
@@ -29,11 +33,24 @@ class DetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         arguments?.let {
             val headline = args.headline
+            webview.webViewClient = WebViewClient() //force webpages to load with this webview
             webview.loadUrl(headline.articleUrl)
+
+            viewModel.findHeadline(headline)
 
             btn_detail_save.setOnClickListener {
                 viewModel.saveHeadline(args.headline)
+                btn_detail_save.visibleOrGone(false)
+                AndroidHelper.showToast(context!!, "Article Saved")
             }
         }
+        registerObserver()
+    }
+
+    private fun registerObserver() {
+        //hide 'save article' button if the headline has already been saved
+        viewModel.headlineExistEvent.observe(viewLifecycleOwner, Observer { headlineSaved ->
+            btn_detail_save.visibleOrGone(!headlineSaved)
+        })
     }
 }

@@ -9,4 +9,5 @@ interface DatabaseInteractor<T> {
     fun insertItem(item: T)
     fun deleteItem(item: T)
     fun getSavedItems(): Single<List<T>>
+    fun findItem(item: T): Single<T>
 }

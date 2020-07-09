@@ -54,4 +54,12 @@ class NewsRepositoryImp(private val newsService: NewsService, private val databa
             .subscribeOn(Schedulers.io())
             .subscribe()
     }
+
+    override fun findHeadline(url: String):  Single<HeadlineScreenModel> {
+        return database.headlineDao().find(url)
+    }
+
+    override fun findSource(id: String):  Single<SourceScreenModel> {
+        return database.sourceDao().find(id)
+    }
 }

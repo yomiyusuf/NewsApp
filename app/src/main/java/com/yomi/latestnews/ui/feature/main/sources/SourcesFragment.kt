@@ -1,13 +1,12 @@
 package com.yomi.latestnews.ui.feature.main.sources
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-
 import com.yomi.latestnews.R
 import com.yomi.latestnews.ui.feature.NewsViewModel
 import kotlinx.android.synthetic.main.fragment_sources.*
@@ -30,10 +29,6 @@ class SourcesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         registerObservers()
         initRecyclerView()
-    }
-
-    override fun onResume() {
-        super.onResume()
         viewModel.getSources()
     }
 
@@ -52,6 +47,8 @@ class SourcesFragment : Fragment() {
                 } else {
                     viewModel.deleteSource(source)
                 }
+                //to notify the adapter the backing data has changed
+                rv_sources.post { listAdapter.notifyDataSetChanged() }
             }
         }
         rv_sources.apply {

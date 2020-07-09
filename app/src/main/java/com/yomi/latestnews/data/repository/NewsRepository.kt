@@ -18,4 +18,6 @@ interface NewsRepository {
     fun deleteSource(source: SourceScreenModel)
     fun saveHeadline(headline: HeadlineScreenModel)
     fun deleteHeadline(headline: HeadlineScreenModel)
+    fun findHeadline(url: String): Single<HeadlineScreenModel>
+    fun findSource(id: String): Single<SourceScreenModel>
 }
