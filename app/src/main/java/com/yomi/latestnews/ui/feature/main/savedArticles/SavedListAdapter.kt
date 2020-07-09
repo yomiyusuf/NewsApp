@@ -36,6 +36,11 @@ class SavedListAdapter(private val savedHeadline: ArrayList<HeadlineScreenModel>
         viewHolder.bindView(savedHeadline[position])
     }
 
+    fun removeItem(item: HeadlineScreenModel) {
+        savedHeadline.remove(item)
+        notifyDataSetChanged()
+    }
+
     inner class HeadlineViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         fun bindView(model: HeadlineScreenModel) {
             with(itemView) {

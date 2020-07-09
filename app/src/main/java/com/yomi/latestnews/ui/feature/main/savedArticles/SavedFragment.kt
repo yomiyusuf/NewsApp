@@ -61,8 +61,9 @@ class SavedFragment : Fragment() {
                     val dialogBuilder = AlertDialog.Builder(context!!)
                     dialogBuilder.setMessage("You are about to delete ${item.title}")
                         .setCancelable(true)
-                        .setPositiveButton("Delete", DialogInterface.OnClickListener {
-                                dialog, id -> viewModel.deleteHeadline(item)
+                        .setPositiveButton("Delete", DialogInterface.OnClickListener { dialog, id ->
+                            viewModel.deleteHeadline(item)
+                            listAdapter.removeItem(item)
                         })
 
                     val alert = dialogBuilder.create()
