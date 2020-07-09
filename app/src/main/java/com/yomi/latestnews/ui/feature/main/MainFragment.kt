@@ -1,4 +1,4 @@
-package com.yomi.latestnews.ui.main
+package com.yomi.latestnews.ui.feature.main
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

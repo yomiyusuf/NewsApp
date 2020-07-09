@@ -18,7 +18,7 @@ class HeadlineScreenModel(
 
     val author: String?,
 
-    val thumbnailUrl: String,
+    val thumbnailUrl: String?,
 
     @PrimaryKey
     val articleUrl: String

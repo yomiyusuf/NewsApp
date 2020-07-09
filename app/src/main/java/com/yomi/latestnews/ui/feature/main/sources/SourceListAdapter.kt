@@ -1,4 +1,4 @@
-package com.yomi.latestnews.ui.feature.sources
+package com.yomi.latestnews.ui.feature.main.sources
 
 import android.view.LayoutInflater
 import android.view.View

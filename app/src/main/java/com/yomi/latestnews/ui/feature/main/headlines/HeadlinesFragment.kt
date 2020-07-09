@@ -1,4 +1,5 @@
-package com.yomi.latestnews.ui.feature.sources
+package com.yomi.latestnews.ui.feature.main.headlines
+
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,47 +11,46 @@ import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.yomi.latestnews.R
 import com.yomi.latestnews.ui.feature.NewsViewModel
-import kotlinx.android.synthetic.main.fragment_sources.*
+import com.yomi.latestnews.util.visibleOrGone
+import kotlinx.android.synthetic.main.fragment_headlines.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class SourcesFragment : Fragment() {
+class HeadlinesFragment : Fragment() {
 
     private val viewModel by sharedViewModel<NewsViewModel>()
-    private lateinit var listAdapter : SourceListAdapter
+    private val listAdapter = HeadlineListAdapter(arrayListOf())
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_sources, container, false)
+        return inflater.inflate(R.layout.fragment_headlines, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         registerObservers()
         initRecyclerView()
-        viewModel.getSources()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.refreshHeadlines()
     }
 
     private fun registerObservers() {
-        viewModel.sources.observe(viewLifecycleOwner, Observer {
-            rv_sources.visibility = View.VISIBLE
+        viewModel.headlines.observe(viewLifecycleOwner, Observer {
+            rv_headlines.visibleOrGone(true)
             listAdapter.updateData(it)
+        })
+
+        viewModel.emptyListEvent.observe(viewLifecycleOwner, Observer { isEmptyList ->
+            txt_headline_empty_msg.visibleOrGone(isEmptyList)
         })
     }
 
     private fun initRecyclerView() {
-        listAdapter = SourceListAdapter(arrayListOf()).apply {
-            itemClick = { source, isChecked ->
-                if (isChecked) {
-                    viewModel.saveSource(source)
-                } else {
-                    viewModel.deleteSource(source)
-                }
-            }
-        }
-        rv_sources.apply {
+        rv_headlines.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = listAdapter
         }
@@ -58,6 +58,7 @@ class SourcesFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance() = SourcesFragment()
+        fun newInstance() =
+            HeadlinesFragment()
     }
 }

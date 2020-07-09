@@ -1,4 +1,4 @@
-package com.yomi.latestnews.ui.feature.savedArticles
+package com.yomi.latestnews.ui.feature.main.savedArticles
 
 import android.view.LayoutInflater
 import android.view.View

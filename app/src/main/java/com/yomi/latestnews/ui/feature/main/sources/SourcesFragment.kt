@@ -1,4 +1,4 @@
-package com.yomi.latestnews.ui.feature.savedArticles
+package com.yomi.latestnews.ui.feature.main.sources
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,25 +6,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.yomi.latestnews.R
 import com.yomi.latestnews.ui.feature.NewsViewModel
-import com.yomi.latestnews.ui.main.MainFragmentDirections
-import com.yomi.latestnews.util.AndroidHelper
-import kotlinx.android.synthetic.main.fragment_saved.*
+import kotlinx.android.synthetic.main.fragment_sources.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class SavedFragment : Fragment() {
+class SourcesFragment : Fragment() {
+
     private val viewModel by sharedViewModel<NewsViewModel>()
-    private lateinit var listAdapter : SavedListAdapter
+    private lateinit var listAdapter : SourceListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_saved, container, false)
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_sources, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -35,29 +34,27 @@ class SavedFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.getSavedHeadlines()
+        viewModel.getSources()
     }
 
     private fun registerObservers() {
-        viewModel.savedHeadlines.observe(viewLifecycleOwner, Observer {
+        viewModel.sources.observe(viewLifecycleOwner, Observer {
+            rv_sources.visibility = View.VISIBLE
             listAdapter.updateData(it)
         })
     }
 
     private fun initRecyclerView() {
-        listAdapter = SavedListAdapter(arrayListOf()).apply {
-            itemClick = { item ->
-                val action = MainFragmentDirections.actionDetail(item)
-                Navigation.findNavController(view!!).navigate(action)
-            }
-
-            deleteClick = { item ->
-                AndroidHelper.showDialog(context!!, "Are you sure you want to delete?",
-                    "You are about to delete ${item.title}", "Delete", "Cancel",
-                    { viewModel.deleteHeadline(item) }, {})
+        listAdapter = SourceListAdapter(arrayListOf()).apply {
+            itemClick = { source, isChecked ->
+                if (isChecked) {
+                    viewModel.saveSource(source)
+                } else {
+                    viewModel.deleteSource(source)
+                }
             }
         }
-        rv_saved.apply {
+        rv_sources.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = listAdapter
         }
@@ -65,7 +62,6 @@ class SavedFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance() =
-            SavedFragment()
+        fun newInstance() = SourcesFragment()
     }
 }

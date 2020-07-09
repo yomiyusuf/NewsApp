@@ -81,9 +81,11 @@ class NewsViewModel(private val headlinesUseCase: HeadlinesUseCase, private val 
                     emptySavedHeadlinesEvent.postValue(true)
                     _savedHeadlines.postValue(emptyList())
                 } else {
-                    emptyListEvent.postValue(false)
+                    emptySavedHeadlinesEvent.postValue(false)
                     _savedHeadlines.postValue(result)}
-            }, {})
+            }, {
+                Log.e("DB ERROR", it.toString())
+            })
     }
 
     fun saveHeadline(headline: HeadlineScreenModel) {

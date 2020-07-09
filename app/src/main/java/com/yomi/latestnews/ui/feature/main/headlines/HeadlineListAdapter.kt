@@ -1,4 +1,4 @@
-package com.yomi.latestnews.ui.feature.headlines
+package com.yomi.latestnews.ui.feature.main.headlines
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.yomi.latestnews.R
-import com.yomi.latestnews.ui.main.MainFragmentDirections
+import com.yomi.latestnews.ui.feature.main.MainFragmentDirections
 import com.yomi.latestnews.ui.model.HeadlineScreenModel
 import com.yomi.latestnews.util.getProgressDrawable
 import com.yomi.latestnews.util.loadImage
@@ -37,8 +37,7 @@ class HeadlineListAdapter(private val headlines: ArrayList<HeadlineScreenModel>)
         holder.view.txt_headline_title.text = headline.title
         holder.view.txt_headline_desc.text = headline.description
         holder.view.txt_headline_author.text = headline.author
-        holder.view.image_headline.loadImage(headline.thumbnailUrl,
-            getProgressDrawable(holder.view.context))
+        holder.view.image_headline.loadImage(headline.thumbnailUrl, getProgressDrawable(holder.view.context))
         holder.view.item_headline.setOnClickListener{
             val action = MainFragmentDirections.actionDetail(headline)
             Navigation.findNavController(holder.view).navigate(action)
