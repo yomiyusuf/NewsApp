@@ -21,4 +21,4 @@ An Android App that uses the news.org api to display latest news
 
 - kotlinx.android.synthetic was used extensively for dev speed. In production, I'll use the explicit findViewById (see https://old.reddit.com/r/androiddev/comments/ala9p2/why_kotlinx_synthetic_is_no_longer_a_recommended/efdvpkg/)
 
-- The Sources RecyclerView has a bug where checking a CheckBox check another one. this seems to be dure to recycling of views. To work around that, view recycling was disabled. With more time, I'll fix the bug buy saving checkbox state within the adapter
+- The Sources RecyclerView has a bug where checking a CheckBox checks another one. this seems to be due to recycling of views. To work around that, view recycling was disabled. With more time, I'll fix the bug buy saving checkbox state within the adapter
